@@ -1,30 +1,42 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:project_1/main.dart';
+import 'package:project_1/app/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets("test case", (WidgetTester tester) async {
+    await tester.pumpWidget(myApp());
+    expect(find.byKey(const Key("result")), findsOneWidget);
+    expect(find.byKey(const Key("displayOne")), findsOneWidget);
+    expect(find.byKey(const Key("displayTwo")), findsOneWidget);
+    expect(find.byIcon(CupertinoIcons.add), findsOneWidget);
+    expect(find.byIcon(CupertinoIcons.minus), findsOneWidget);
+    expect(find.byIcon(CupertinoIcons.multiply), findsOneWidget);
+    expect(find.byIcon(CupertinoIcons.divide), findsOneWidget);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.enterText(find.byKey(const Key("displayOne")), "6");
+    await tester.enterText(find.byKey(const Key("displayTwo")), "4");
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byIcon(CupertinoIcons.add));
+
     await tester.pump();
+    expect(find.text("10"), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byIcon(CupertinoIcons.minus));
+
+    await tester.pump();
+    expect(find.text("2"), findsOneWidget);
+
+    await tester.tap(find.byIcon(CupertinoIcons.multiply));
+
+    await tester.pump();
+    expect(find.text("24"), findsOneWidget);
+
+    await tester.tap(find.byIcon(CupertinoIcons.divide));
+
+    await tester.pump();
+    expect(find.text("1.5"), findsOneWidget);
   });
 }
